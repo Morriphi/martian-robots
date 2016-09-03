@@ -1,0 +1,25 @@
+{
+  "name": "martian-robots",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "semistandard && mocha"
+  },
+  "keywords": [
+    "martian",
+    "robots"
+  ],
+  "author": "Philip Morris",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2",
+    "semistandard": "^8.0.0"
+  },
+  "semistandard": {
+    "ignore": [
+      "node_modules"
+    ]
+  }
+}
