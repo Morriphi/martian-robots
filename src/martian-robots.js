@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = (width, height) => {
   const obj = {};
 
   const robots = [];
@@ -11,7 +11,11 @@ module.exports = () => {
     robots[robots.length - 1].forward();
   };
 
-  obj.positions = () => robots.map(x => x.position());
+  obj.positions = () => robots.map(x => x.position(isOutsideMap));
+
+  function isOutsideMap (x, y) {
+    return x < 0 || y < 0 || x > (width - 1) || y > (height - 1);
+  }
 
   return obj;
 };
@@ -35,7 +39,8 @@ function robot (x, y, direction) {
   };
 
   obj.position = (isOutsideMap) => {
-    return `${_x} ${_y} ${_direction}`;
+    var s = `${_x} ${_y} ${_direction}`;
+    return isOutsideMap(_x, _y) ? `${s} LOST` : s;
   };
 
   return obj;
