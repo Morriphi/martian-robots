@@ -20,6 +20,10 @@
   "semistandard": {
     "ignore": [
       "node_modules"
+    ],
+    "globals": [
+      "describe",
+      "it"
     ]
   }
 }
