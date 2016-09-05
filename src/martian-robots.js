@@ -9,6 +9,14 @@ module.exports = (width, height) => {
     robots.push(robot(x, y, direction));
   };
 
+  obj.right = () => {
+    robots[robots.length - 1].right();
+  };
+
+  obj.left = () => {
+    robots[robots.length - 1].left();
+  };
+
   obj.forward = () => {
     robots[robots.length - 1].forward();
   };

@@ -78,4 +78,64 @@ describe('Robots', () => {
     martianRobots.forward();
     expect(martianRobots.positions()).to.eql(['-1 0 W LOST']);
   });
+
+  it('can rotate right from NORTH', () => {
+    martianRobots.spawn(0, 0, 'N');
+    martianRobots.right();
+    expect(martianRobots.positions()).to.eql(['0 0 E']);
+  });
+
+  it('can rotate right from EAST', () => {
+    martianRobots.spawn(0, 0, 'E');
+    martianRobots.right();
+    expect(martianRobots.positions()).to.eql(['0 0 S']);
+  });
+
+  it('can rotate right from SOUTH', () => {
+    martianRobots.spawn(0, 0, 'S');
+    martianRobots.right();
+    expect(martianRobots.positions()).to.eql(['0 0 W']);
+  });
+
+  it('can rotate right from WEST', () => {
+    martianRobots.spawn(0, 0, 'W');
+    martianRobots.right();
+    expect(martianRobots.positions()).to.eql(['0 0 N']);
+  });
+
+  it('cannot rotate right from INVALID direction', () => {
+    martianRobots.spawn(0, 0, 'X');
+    martianRobots.right();
+    expect(martianRobots.positions()).to.eql(['0 0 X']);
+  });
+
+  it('can rotate left from NORTH', () => {
+    martianRobots.spawn(0, 0, 'N');
+    martianRobots.left();
+    expect(martianRobots.positions()).to.eql(['0 0 W']);
+  });
+
+  it('can rotate left from EAST', () => {
+    martianRobots.spawn(0, 0, 'E');
+    martianRobots.left();
+    expect(martianRobots.positions()).to.eql(['0 0 N']);
+  });
+
+  it('can rotate left from SOUTH', () => {
+    martianRobots.spawn(0, 0, 'S');
+    martianRobots.left();
+    expect(martianRobots.positions()).to.eql(['0 0 E']);
+  });
+
+  it('can rotate left from WEST', () => {
+    martianRobots.spawn(0, 0, 'W');
+    martianRobots.left();
+    expect(martianRobots.positions()).to.eql(['0 0 S']);
+  });
+
+  it('cannot rotate right from INVALID direction', () => {
+    martianRobots.spawn(0, 0, 'X');
+    martianRobots.left();
+    expect(martianRobots.positions()).to.eql(['0 0 X']);
+  });
 });
