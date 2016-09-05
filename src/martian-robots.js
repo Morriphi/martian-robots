@@ -9,19 +9,17 @@ module.exports = (width, height) => {
     robots.push(robot(x, y, direction));
   };
 
-  obj.right = () => {
-    robots[robots.length - 1].right();
-  };
+  obj.left = () => currentRobot().left();
 
-  obj.left = () => {
-    robots[robots.length - 1].left();
-  };
+  obj.right = () => currentRobot().right();
 
-  obj.forward = () => {
-    robots[robots.length - 1].forward();
-  };
+  obj.forward = () => currentRobot().forward();
 
   obj.positions = () => robots.map(x => x.position(isOutsideMap));
+
+  function currentRobot () {
+    return robots[robots.length - 1];
+  }
 
   function isOutsideMap (x, y) {
     return x < 0 || y < 0 || x > (width - 1) || y > (height - 1);
