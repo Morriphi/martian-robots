@@ -1,12 +1,14 @@
-const robot = require('./robot');
+const Grid = require('./grid');
+const Robot = require('./robot');
 
 module.exports = (width, height) => {
   const obj = {};
 
   const robots = [];
+  const grid = Grid(width, height);
 
   obj.spawn = (x, y, direction) => {
-    robots.push(robot(x, y, direction));
+    robots.push(Robot(x, y, direction));
   };
 
   obj.left = () => currentRobot().left();
@@ -15,14 +17,10 @@ module.exports = (width, height) => {
 
   obj.forward = () => currentRobot().forward();
 
-  obj.positions = () => robots.map(x => x.position(isOutsideMap));
+  obj.positions = () => robots.map(x => x.position(grid.isOutside));
 
   function currentRobot () {
     return robots[robots.length - 1];
-  }
-
-  function isOutsideMap (x, y) {
-    return x < 0 || y < 0 || x > (width - 1) || y > (height - 1);
   }
 
   return obj;
