@@ -1,33 +1,51 @@
-module.exports = (x, y, direction) => {
+const east = require('./directions/east');
+const west = require('./directions/west');
+const north = require('./directions/north');
+const south = require('./directions/south');
+
+module.exports = (x, y, dir) => {
   const obj = {};
 
-  let _x = x;
-  let _y = y;
-  let _dir = direction;
+  let isLost = false;
+  let direction = dir;
+  let position = {x, y};
 
-  const positions = {
-    'N': {forward (hasScent) { if (!hasScent(_x, _y + 1)) { _y++; } }, right () { _dir = 'E'; }, left () { _dir = 'W'; }},
-    'S': {forward (hasScent) { if (!hasScent(_x, _y - 1)) { _y--; } }, right () { _dir = 'W'; }, left () { _dir = 'E'; }},
-    'E': {forward (hasScent) { if (!hasScent(_x + 1, _y)) { _x++; } }, right () { _dir = 'S'; }, left () { _dir = 'N'; }},
-    'W': {forward (hasScent) { if (!hasScent(_x - 1, _y)) { _x--; } }, right () { _dir = 'N'; }, left () { _dir = 'S'; }}
+  const positions = {'N': north, 'S': south, 'E': east, 'W': west};
+
+  obj.left = () => {
+    if (!isLost) {
+      const dir = execute('left');
+      if (dir) {
+        direction = dir;
+      }
+    }
   };
 
-  obj.left = () => execute('left');
-
-  obj.right = () => execute('right');
-
-  obj.forward = (hasScent, leaveScent) => {
-    execute('forward', hasScent);
-    leaveScent(_x, _y);
+  obj.right = () => {
+    if (!isLost) {
+      const dir = execute('right');
+      if (dir) {
+        direction = dir;
+      }
+    }
   };
 
-  obj.position = (isOutsideMap) => {
-    var s = `${_x} ${_y} ${_dir}`;
-    return isOutsideMap(_x, _y) ? `${s} LOST` : s;
+  obj.forward = (hasScent, leaveScent, isOutsideMap) => {
+    const pos = execute('forward', position);
+    if (pos) {
+      if (isOutsideMap(pos) && !hasScent(pos)) {
+        isLost = true;
+        leaveScent(pos);
+      } else if (!isLost && !hasScent(pos)) {
+        position = pos;
+      }
+    }
   };
 
-  function execute (action, hasScent) {
-    positions[_dir] ? positions[_dir][action](hasScent) : null;
+  obj.position = () => `${position.x} ${position.y} ${direction}${isLost ? ' LOST' : ''}`;
+
+  function execute (action) {
+    return positions[direction] ? positions[direction][action].apply(null, [].slice.call(arguments, 1)) : null;
   }
 
   return obj;

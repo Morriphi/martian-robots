@@ -5,7 +5,7 @@ describe('Robots', () => {
   let mars;
 
   beforeEach(() => {
-    mars = Mars(2, 2);
+    mars = Mars(5, 3);
   });
 
   it('can spawn', () => {
@@ -15,10 +15,10 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['0 0 E', '1 1 N']);
   });
 
-  it('can spawn Mars but are LOST', () => {
-    mars.spawn(1, 2, 'E');
-    mars.spawn(2, 1, 'N');
-    expect(mars.positions()).to.eql(['1 2 E LOST', '2 1 N LOST']);
+  it('cannot spawn outside mars', () => {
+    mars.spawn(1, 4, 'E');
+    mars.spawn(6, 1, 'N');
+    expect(mars.positions()).to.eql([]);
   });
 
   it('cannot move forward in INVALID direction', () => {
@@ -34,10 +34,10 @@ describe('Robots', () => {
   });
 
   it('are LOST if move forward off Mars to the NORTH', () => {
-    mars.spawn(0, 0, 'N');
+    mars.spawn(1, 2, 'N');
     mars.forward();
     mars.forward();
-    expect(mars.positions()).to.eql(['0 2 N LOST']);
+    expect(mars.positions()).to.eql(['1 3 N LOST']);
   });
 
   it('can move forward to the SOUTH', () => {
@@ -50,7 +50,7 @@ describe('Robots', () => {
     mars.spawn(0, 1, 'S');
     mars.forward();
     mars.forward();
-    expect(mars.positions()).to.eql(['0 -1 S LOST']);
+    expect(mars.positions()).to.eql(['0 0 S LOST']);
   });
 
   it('can move forward to the EAST', () => {
@@ -60,10 +60,10 @@ describe('Robots', () => {
   });
 
   it('are LOST if move forward off Mars to the EAST', () => {
-    mars.spawn(0, 0, 'E');
+    mars.spawn(4, 0, 'E');
     mars.forward();
     mars.forward();
-    expect(mars.positions()).to.eql(['2 0 E LOST']);
+    expect(mars.positions()).to.eql(['5 0 E LOST']);
   });
 
   it('can move forward to the WEST', () => {
@@ -76,7 +76,7 @@ describe('Robots', () => {
     mars.spawn(1, 0, 'W');
     mars.forward();
     mars.forward();
-    expect(mars.positions()).to.eql(['-1 0 W LOST']);
+    expect(mars.positions()).to.eql(['0 0 W LOST']);
   });
 
   it('can rotate right from NORTH', () => {
@@ -144,23 +144,28 @@ describe('Robots', () => {
     mars.forward();
     mars.spawn(0, 0, 'S');
     mars.forward();
-    expect(mars.positions()).to.eql(['0 -1 S LOST', '0 0 S']);
+    expect(mars.positions()).to.eql(['0 0 S LOST', '0 0 S']);
   });
 
   it('cannot get LOST if previous robot left a scent moving NORTH', () => {
-    mars.spawn(0, 1, 'N');
+    mars.spawn(0, 2, 'N');
     mars.forward();
-    mars.spawn(0, 1, 'N');
     mars.forward();
-    expect(mars.positions()).to.eql(['0 2 N LOST', '0 1 N']);
+    mars.spawn(0, 2, 'N');
+    mars.forward();
+    mars.forward();
+
+    expect(mars.positions()).to.eql(['0 3 N LOST', '0 3 N']);
   });
 
   it('cannot get LOST if previous robot left a scent moving EAST', () => {
-    mars.spawn(1, 1, 'E');
+    mars.spawn(4, 1, 'E');
     mars.forward();
-    mars.spawn(1, 1, 'E');
     mars.forward();
-    expect(mars.positions()).to.eql(['2 1 E LOST', '1 1 E']);
+    mars.spawn(4, 1, 'E');
+    mars.forward();
+    mars.forward();
+    expect(mars.positions()).to.eql(['5 1 E LOST', '5 1 E']);
   });
 
   it('cannot get LOST if previous robot left a scent moving WEST', () => {
@@ -168,14 +173,40 @@ describe('Robots', () => {
     mars.forward();
     mars.spawn(0, 0, 'W');
     mars.forward();
-    expect(mars.positions()).to.eql(['-1 0 W LOST', '0 0 W']);
+    expect(mars.positions()).to.eql(['0 0 W LOST', '0 0 W']);
   });
 
   it('can still get lost if scent is at different location', () => {
-    mars.spawn(1, 1, 'N');
+    mars.spawn(1, 2, 'N');
     mars.forward();
-    mars.spawn(1, 0, 'N');
     mars.forward();
-    expect(mars.positions()).to.eql(['1 2 N LOST', '1 1 N']);
+    mars.spawn(2, 2, 'N');
+    mars.forward();
+    mars.forward();
+    expect(mars.positions()).to.eql(['1 3 N LOST', '2 3 N LOST']);
+  });
+
+  it('stops responding to left when LOST', () => {
+    mars.spawn(0, 0, 'S');
+    mars.forward();
+    mars.left();
+
+    expect(mars.positions()).to.eql(['0 0 S LOST']);
+  });
+
+  it('stops responding to right when LOST', () => {
+    mars.spawn(0, 0, 'S');
+    mars.forward();
+    mars.right();
+
+    expect(mars.positions()).to.eql(['0 0 S LOST']);
+  });
+
+  it('stops responding to forward SOUTH when LOST', () => {
+    mars.spawn(0, 1, 'S');
+    mars.forward();
+    mars.forward();
+
+    expect(mars.positions()).to.eql(['0 0 S LOST']);
   });
 });
