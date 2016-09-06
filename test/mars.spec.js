@@ -148,11 +148,11 @@ describe('Robots', () => {
   });
 
   it('cannot get LOST if previous robot left a scent moving NORTH', () => {
-    mars.spawn(1, 1, 'N');
+    mars.spawn(0, 1, 'N');
     mars.forward();
-    mars.spawn(1, 1, 'N');
+    mars.spawn(0, 1, 'N');
     mars.forward();
-    expect(mars.positions()).to.eql(['1 2 N LOST', '1 1 N']);
+    expect(mars.positions()).to.eql(['0 2 N LOST', '0 1 N']);
   });
 
   it('cannot get LOST if previous robot left a scent moving EAST', () => {
@@ -169,5 +169,13 @@ describe('Robots', () => {
     mars.spawn(0, 0, 'W');
     mars.forward();
     expect(mars.positions()).to.eql(['-1 0 W LOST', '0 0 W']);
+  });
+
+  it('can still get lost if scent is at different location', () => {
+    mars.spawn(1, 1, 'N');
+    mars.forward();
+    mars.spawn(1, 0, 'N');
+    mars.forward();
+    expect(mars.positions()).to.eql(['1 2 N LOST', '1 1 N']);
   });
 });

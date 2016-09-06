@@ -3,13 +3,13 @@ module.exports = (x, y, direction) => {
 
   let _x = x;
   let _y = y;
-  let _direction = direction;
+  let _dir = direction;
 
   const positions = {
-    'N': {forward (hasScent) { if (!hasScent(_x, _y + 1)) { _y++; } }, right () { _direction = 'E'; }, left () { _direction = 'W'; }},
-    'S': {forward (hasScent) { if (!hasScent(_x, _y - 1)) { _y--; } }, right () { _direction = 'W'; }, left () { _direction = 'E'; }},
-    'E': {forward (hasScent) { if (!hasScent(_x + 1, _y)) { _x++; } }, right () { _direction = 'S'; }, left () { _direction = 'N'; }},
-    'W': {forward (hasScent) { if (!hasScent(_x - 1, _y)) { _x--; } }, right () { _direction = 'N'; }, left () { _direction = 'S'; }}
+    'N': {forward (hasScent) { if (!hasScent(_x, _y + 1)) { _y++; } }, right () { _dir = 'E'; }, left () { _dir = 'W'; }},
+    'S': {forward (hasScent) { if (!hasScent(_x, _y - 1)) { _y--; } }, right () { _dir = 'W'; }, left () { _dir = 'E'; }},
+    'E': {forward (hasScent) { if (!hasScent(_x + 1, _y)) { _x++; } }, right () { _dir = 'S'; }, left () { _dir = 'N'; }},
+    'W': {forward (hasScent) { if (!hasScent(_x - 1, _y)) { _x--; } }, right () { _dir = 'N'; }, left () { _dir = 'S'; }}
   };
 
   obj.left = () => execute('left');
@@ -22,12 +22,12 @@ module.exports = (x, y, direction) => {
   };
 
   obj.position = (isOutsideMap) => {
-    var s = `${_x} ${_y} ${_direction}`;
+    var s = `${_x} ${_y} ${_dir}`;
     return isOutsideMap(_x, _y) ? `${s} LOST` : s;
   };
 
-  function execute (action, hasScent, leaveScent) {
-    positions[_direction] ? positions[_direction][action](hasScent, leaveScent) : null;
+  function execute (action, hasScent) {
+    positions[_dir] ? positions[_dir][action](hasScent) : null;
   }
 
   return obj;

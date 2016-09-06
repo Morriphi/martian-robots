@@ -13,13 +13,13 @@ module.exports = (width, height) => {
     robots.push(Robot(x, y, direction));
   };
 
-  function hasScent (x) {
-    return scents.filter(s => s.x === x).length > 0;
+  function hasScent (x, y) {
+    return scents.filter(s => s.x === x && s.y === y).length > 0;
   }
 
   function leaveScent (x, y) {
     if (grid.isOutside(x, y)) {
-      scents.push({x});
+      scents.push({x, y});
     }
   }
 
