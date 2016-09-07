@@ -79,24 +79,6 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['0 0 W LOST']);
   });
 
-  it('can rotate right from NORTH', () => {
-    mars.spawn(0, 0, 'N');
-    mars.right();
-    expect(mars.positions()).to.eql(['0 0 E']);
-  });
-
-  it('can rotate right from EAST', () => {
-    mars.spawn(0, 0, 'E');
-    mars.right();
-    expect(mars.positions()).to.eql(['0 0 S']);
-  });
-
-  it('can rotate right from SOUTH', () => {
-    mars.spawn(0, 0, 'S');
-    mars.right();
-    expect(mars.positions()).to.eql(['0 0 W']);
-  });
-
   it('can rotate right', () => {
     mars.spawn(0, 0, 'W');
     mars.right();
