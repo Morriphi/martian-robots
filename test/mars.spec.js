@@ -33,7 +33,7 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['0 1 N']);
   });
 
-  it('are LOST if move forward off Mars to the NORTH', () => {
+  it('are LOST if they move forward off Mars to the NORTH', () => {
     mars.spawn(1, 2, 'N');
     mars.forward();
     mars.forward();
@@ -46,7 +46,7 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['0 0 S']);
   });
 
-  it('are LOST if move forward off Mars to the SOUTH', () => {
+  it('are LOST if they move forward off Mars to the SOUTH', () => {
     mars.spawn(0, 1, 'S');
     mars.forward();
     mars.forward();
@@ -59,7 +59,7 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['1 0 E']);
   });
 
-  it('are LOST if move forward off Mars to the EAST', () => {
+  it('are LOST if they move forward off Mars to the EAST', () => {
     mars.spawn(4, 0, 'E');
     mars.forward();
     mars.forward();
@@ -97,10 +97,16 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['0 0 W']);
   });
 
-  it('can rotate right from WEST', () => {
+  it('can rotate right', () => {
     mars.spawn(0, 0, 'W');
     mars.right();
     expect(mars.positions()).to.eql(['0 0 N']);
+    mars.right();
+    expect(mars.positions()).to.eql(['0 0 E']);
+    mars.right();
+    expect(mars.positions()).to.eql(['0 0 S']);
+    mars.right();
+    expect(mars.positions()).to.eql(['0 0 W']);
   });
 
   it('cannot rotate right from INVALID direction', () => {
@@ -109,31 +115,19 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['0 0 X']);
   });
 
-  it('can rotate left from NORTH', () => {
+  it('can rotate left', () => {
     mars.spawn(0, 0, 'N');
     mars.left();
     expect(mars.positions()).to.eql(['0 0 W']);
-  });
-
-  it('can rotate left from EAST', () => {
-    mars.spawn(0, 0, 'E');
+    mars.left();
+    expect(mars.positions()).to.eql(['0 0 S']);
+    mars.left();
+    expect(mars.positions()).to.eql(['0 0 E']);
     mars.left();
     expect(mars.positions()).to.eql(['0 0 N']);
   });
 
-  it('can rotate left from SOUTH', () => {
-    mars.spawn(0, 0, 'S');
-    mars.left();
-    expect(mars.positions()).to.eql(['0 0 E']);
-  });
-
-  it('can rotate left from WEST', () => {
-    mars.spawn(0, 0, 'W');
-    mars.left();
-    expect(mars.positions()).to.eql(['0 0 S']);
-  });
-
-  it('cannot rotate right from INVALID direction', () => {
+  it('cannot rotate left from INVALID direction', () => {
     mars.spawn(0, 0, 'X');
     mars.left();
     expect(mars.positions()).to.eql(['0 0 X']);
@@ -202,7 +196,7 @@ describe('Robots', () => {
     expect(mars.positions()).to.eql(['0 0 S LOST']);
   });
 
-  it('stops responding to forward SOUTH when LOST', () => {
+  it('stops responding to forward when LOST', () => {
     mars.spawn(0, 1, 'S');
     mars.forward();
     mars.forward();
