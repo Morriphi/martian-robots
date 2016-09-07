@@ -24,6 +24,7 @@
     "globals": [
       "describe",
       "it",
+      "xit",
       "beforeEach"
     ]
   }

@@ -8,7 +8,7 @@ module.exports = (x, y, dir) => {
 
   let isLost = false;
   let direction = dir;
-  let position = {x, y};
+  let currentPosition = {x, y};
 
   const positions = {'N': north, 'S': south, 'E': east, 'W': west};
 
@@ -31,18 +31,18 @@ module.exports = (x, y, dir) => {
   };
 
   obj.forward = (hasScent, leaveScent, isOutsideMap) => {
-    const pos = execute('forward', position);
-    if (pos) {
-      if (isOutsideMap(pos) && !hasScent(pos)) {
+    const forwardPosition = execute('forward', currentPosition);
+    if (forwardPosition) {
+      if (isOutsideMap(forwardPosition) && !hasScent(forwardPosition)) {
         isLost = true;
-        leaveScent(pos);
-      } else if (!isLost && !hasScent(pos)) {
-        position = pos;
+        leaveScent(forwardPosition);
+      } else if (!isLost && !hasScent(forwardPosition)) {
+        currentPosition = forwardPosition;
       }
     }
   };
 
-  obj.position = () => `${position.x} ${position.y} ${direction}${isLost ? ' LOST' : ''}`;
+  obj.position = () => `${currentPosition.x} ${currentPosition.y} ${direction}${isLost ? ' LOST' : ''}`;
 
   function execute (action) {
     return positions[direction] ? positions[direction][action].apply(null, [].slice.call(arguments, 1)) : null;

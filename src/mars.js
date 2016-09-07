@@ -15,16 +15,6 @@ module.exports = (width, height) => {
     }
   };
 
-  function hasScent ({x, y}) {
-    return scents.filter(s => s.x === x && s.y === y).length > 0;
-  }
-
-  function leaveScent (position) {
-    if (grid.isOutside(position)) {
-      scents.push(position);
-    }
-  }
-
   obj.left = () => currentRobot().left();
 
   obj.right = () => currentRobot().right();
@@ -35,6 +25,16 @@ module.exports = (width, height) => {
 
   function currentRobot () {
     return robots[robots.length - 1];
+  }
+
+  function hasScent ({x, y}) {
+    return scents.filter(s => s.x === x && s.y === y).length > 0;
+  }
+
+  function leaveScent (position) {
+    if (grid.isOutside(position)) {
+      scents.push(position);
+    }
   }
 
   return obj;
